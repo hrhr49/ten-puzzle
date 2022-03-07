@@ -79,9 +79,10 @@ const evalNode = (node: OpNode | number): Fraction => {
   }
 };
 
-const solve10puzzleFixedOrder = (n1: number, n2: number, n3: number, n4: number): OpNode | null => {
+const solve10puzzleFixedOrder = (n1: number, n2: number, n3: number, n4: number): OpNode[] => {
   // console.log(n1, n2, n3, n4);
   const ten: Fraction = number2Fraction(10);
+  const answers: OpNode[] = [];
 
   for (const op1 of operators) {
     for (const op2 of operators) {
@@ -134,7 +135,7 @@ const solve10puzzleFixedOrder = (n1: number, n2: number, n3: number, n4: number)
         for (const node of [node1, node2, node3]) {
           try {
             if (isSameFraction(evalNode(node), ten)) {
-              return node;
+              answers.push(node);
             }
           } catch (e) {
           }
@@ -142,37 +143,54 @@ const solve10puzzleFixedOrder = (n1: number, n2: number, n3: number, n4: number)
       }
     }
   }
-  return null;
+  return answers;
 };
 
 const is4Num = (nums: number[]): nums is [number, number, number, number] => nums.length === 4;
 
-const solve10puzzle_ = (accum: number[], rest: number[]): OpNode | null => {
+const solve10puzzle_ = (accum: number[], rest: number[]): OpNode[] => {
   if (rest.length === 0) {
     if (!is4Num(accum)) {
       throw Error();
     }
     return solve10puzzleFixedOrder(...accum);
   } else {
+    const answers: OpNode[] = [];
     for (let i = 0; i < rest.length; i++) {
-      const node = solve10puzzle_([...accum, rest[i]], [...rest.slice(0, i), ...rest.slice(i + 1)]);
-      if (node !== null) {
-        return node;
-      }
+      const tmpAnswers = solve10puzzle_([...accum, rest[i]], [...rest.slice(0, i), ...rest.slice(i + 1)]);
+      answers.push(...tmpAnswers);
     }
-    return null;
+    return answers;
   }
 };
 
-const solve10puzzle = (n1: number, n2: number, n3: number, n4: number): OpNode | null => {
+const solve10puzzle = (n1: number, n2: number, n3: number, n4: number): OpNode[] => {
   return solve10puzzle_([], [n1, n2, n3, n4]);
 };
+
+const operatorPriorityMap = {
+  '+': 1,
+  '-': 1,
+  '*': 2,
+  '/': 2,
+} as const;
 
 const node2String = (node: OpNode | number): string => {
   if (typeof node === 'number') {
     return String(node);
   } else {
-    return `( ${node2String(node.left)} ${node.operator} ${node2String(node.right)} )`;
+    const {left, right, operator} = node;
+    let leftString = node2String(left);
+    if (typeof left !== 'number' && operatorPriorityMap[left.operator] < operatorPriorityMap[operator]) {
+      leftString = `( ${leftString} )`;
+    }
+
+    let rightString = node2String(right);
+    if (typeof right !== 'number' && operatorPriorityMap[right.operator] < operatorPriorityMap[operator]) {
+      rightString = `( ${rightString} )`;
+    }
+
+    return `${leftString} ${operator} ${rightString}`;
   }
 };
 
