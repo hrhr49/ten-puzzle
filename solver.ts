@@ -198,3 +198,7 @@ export {
   solve10puzzle,
   node2String,
 }
+
+export type {
+  OpNode,
+}

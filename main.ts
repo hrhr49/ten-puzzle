@@ -3,10 +3,28 @@ import {
   node2String,
 } from './solver';
 
+import type {
+  OpNode,
+} from './solver';
+
+const getElemById = (id: string): HTMLElement => {
+  const elem = document.getElementById(id);
+  if (elem == null) throw Error(`id: ${id} is not found`);
+  return elem;
+};
+
+const probElem = getElemById('problem');
+const ansAreaElem = getElemById('answer-area');
+const ansElem = getElemById('answer');
+const allAnsElem = getElemById('all-answer');
+
+const ansBtnElem = getElemById('answer-btn');
+const nextBtnElem = getElemById('next-btn');
 
 const nextProblem = () => {
-  let answers = [];
-  let problem: [number, number, number, number];
+  let answers: OpNode[] = [];
+  let problem: [number, number, number, number] = [0, 0, 0, 0];
+
   while (answers.length === 0) {
     problem = [
       Math.floor(Math.random() * 10),
@@ -16,36 +34,32 @@ const nextProblem = () => {
     ];
     answers = solve10puzzle(...problem);
   }
-  const answerStrings = new Set(answers.map(node2String));
+  const answerStrings: string[] = [...new Set(answers.map(node2String))];
 
-  const probDiv = document.getElementById('problem');
-  probDiv.textContent = problem.join(' ');
+  probElem.textContent = problem.join(' ');
 
-  const ansElem = document.getElementById('answer');
-  ansElem.style.display = 'none';
+  ansAreaElem.style.display = 'none';
+  ansAreaElem.removeAttribute('open');
 
-  while (ansElem.firstChild) {
-    ansElem.removeChild(ansElem.firstChild);
+  ansElem.textContent = answerStrings[0];
+
+  while (allAnsElem.firstChild) {
+    allAnsElem.removeChild(allAnsElem.firstChild);
   }
 
   answerStrings.forEach((ansString) => {
     const newElem = document.createElement('li');
     newElem.textContent = ansString;
-    ansElem.appendChild(newElem);
+    allAnsElem.appendChild(newElem);
   });
 
 };
 
-const showAnswer = () => {
-  const div = document.getElementById('answer');
-  div.style.display = 'block';
-};
-
-document.getElementById('show-answer').addEventListener('click', () => {
-  showAnswer();
+ansBtnElem.addEventListener('click', () => {
+  ansAreaElem.style.display = 'block';
 });
 
-document.getElementById('next-problem').addEventListener('click', () => {
+nextBtnElem.addEventListener('click', () => {
   nextProblem();
 });
 

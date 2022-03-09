@@ -5,14 +5,64 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title></title>
+  <style>
+    html, body {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      padding: 0;
+    }
+    html {
+      display: table;
+    }
+    body {
+      display: table-cell;
+      text-align: center;
+      vertical-align: middle;
+    }
+    #problem {
+      font-size: 15vh;
+    }
+    button {
+      font-size: 1.2rem;
+      line-height: 1.5;
+      position: relative;
+      display: inline-block;
+      padding: 0.5rem 1rem;
+      cursor: pointer;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+      -webkit-transition: all 0.3s;
+      transition: all 0.3s;
+      text-align: center;
+      vertical-align: middle;
+      text-decoration: none;
+      letter-spacing: 0.1em;
+      color: #212529;
+      border-radius: 0.2rem;
+      border: solid 0.1rem #4169e1;
+      background-color: #eee;
+      color: #4169e1;
+    }
+    button:hover {
+      background-color: #4169e1;
+      color: #eee;
+    }
+    details {
+      font-size: 1.2rem;
+    }
+  </style>
 </head>
 <body>
-  <h1>10 Puzzle</h1>
   <div id="problem"></div>
-  <ul id="answer">
-  </ul>
-  <button id="show-answer">show answer</button>
-  <button id="next-problem">next</button>
+  <button id="answer-btn">answer</button>
+  <button id="next-btn">next</button>
+  <details id="answer-area">
+    <summary id="answer"></summary>
+    <ul id="all-answer"></ul>
+  </details>
   <script src="main.ts"></script>
 </body>
 </html>
