@@ -53,6 +53,9 @@
     details {
       font-size: 1.2rem;
     }
+    ul {
+      list-style: none;
+    }
   </style>
 </head>
 <body>
@@ -64,5 +67,16 @@
     <ul id="all-answer"></ul>
   </details>
   <script src="main.ts"></script>
+  <script>
+    if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('sw.js')
+              .then((reg) => {
+                      console.log('Service worker registered.', reg);
+                    })
+              .catch((error) => {
+                      console.log("Error: Service worker is not registered.", error);
+                    });
+          }
+  </script>
 </body>
 </html>
