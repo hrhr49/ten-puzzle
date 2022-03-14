@@ -27,10 +27,11 @@ const nextProblem = () => {
 
   while (answers.length === 0) {
     problem = [
-      Math.floor(Math.random() * 10),
-      Math.floor(Math.random() * 10),
-      Math.floor(Math.random() * 10),
-      Math.floor(Math.random() * 10),
+      // Math.floor(Math.random() * 10),
+      // Math.floor(Math.random() * 10),
+      // Math.floor(Math.random() * 10),
+      // Math.floor(Math.random() * 10),
+6,9,4,5
     ];
     answers = solve10puzzle(...problem);
   }
