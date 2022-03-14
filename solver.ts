@@ -186,7 +186,7 @@ const node2String = (node: OpNode | number): string => {
     }
 
     let rightString = node2String(right);
-    if (typeof right !== 'number' && operatorPriorityMap[right.operator] < operatorPriorityMap[operator]) {
+    if (typeof right !== 'number' && operatorPriorityMap[right.operator] <= operatorPriorityMap[operator]) {
       rightString = `( ${rightString} )`;
     }
 
